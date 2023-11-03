@@ -18,9 +18,12 @@ services:
       - MYSQL_HOST=mysql
       - NEXTCLOUD_ADMIN_USER=locadm
       - NEXTCLOUD_ADMIN_PASSWORD=whoiamiamadmin
-     # - NEXTCLOUD_TRUSTED_DOMAINS=yourdomain.local - Разрешить вход через указанные домен, можно добавлять несколько через пробел
+      #- NEXTCLOUD_TRUSTED_DOMAINS=192.168.0.46
     restart: unless-stopped
-
+    networks:
+      - internet
+      - localnet
+      
   mysql:
     image: mysql:latest
     container_name: mysql_nextcloud
@@ -34,3 +37,13 @@ services:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
     restart: unless-stopped
+    networks:
+      - localnet
+
+networks:
+  internet:
+    name: internet
+    driver: bridge
+  localnet:
+    name: localnet
+    driver: bridge
